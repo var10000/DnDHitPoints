@@ -5,6 +5,12 @@ import (
 )
 
 // InitServices returns inited services
-func InitServices() {
-	sqlite.CreateRepositories()
+func InitServices() Application {
+	ur, cr, rr, br := sqlite.CreateRepositories()
+	return Application{
+		ur: ur,
+		cr: cr,
+		rr: rr,
+		br: br,
+	}
 }
