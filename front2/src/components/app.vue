@@ -26,8 +26,8 @@
 
       <create-battle-list-popup
         :opened="isCreateCharacterList"
-        :listOfCharactersData="listOfCharactersData"
-        :listOfFightCharactersData="listOfFightCharactersData"
+        :listOfCharactersData="getListOfCharacters"
+        :listOfFightCharactersData="getListOfFightCharacters"
         @popup:complete="saveCharacter"
         @popup:closed="isCreateCharacterList = false">
       </create-battle-list-popup>
@@ -51,20 +51,23 @@
       return {
         isCreateCharacter: false,
         isCreateCharacterList: false,
-        listOfCharactersData: this.listOfCharacters.slice() || [],
-        listOfFightCharactersData: this.listOfFightCharacters.slice() || []
+        listOfCharactersData: [],
+        listOfFightCharactersData: []
       }
     },
     computed: {
       ...mapGetters({
-        listOfCharacters: "getListOfCharacters",
-        listOfFightCharacters: "getListOfFightCharacters"
+        getListOfCharacters: "characters/getListOfCharacters",
+        getListOfFightCharacters: "characters/getListOfFightCharacters"
       }),
     },
     methods: {
       saveCharacter(data) {
 
-      }
+      },
+    },
+    created() {
+      this.$store.dispatch("characters/loadListOfCharacters").then(() => {console.log("***")});
     }
   }
 </script>

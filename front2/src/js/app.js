@@ -17,13 +17,15 @@ import '../css/app.css';
 // Import App Component
 import App from '../components/app.vue';
 
+import store from "../store";
 
-// Init Framework7-Vue Plugin
+// Init Framework7- Plugin
 Framework7.use(Framework7Vue);
 
 // Init App
 new Vue({
   el: '#app',
+  store,
   render: (h) => h(App),
 
   // Register App Component

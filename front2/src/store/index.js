@@ -8,12 +8,30 @@ import VuexPersist from 'vuex-persist';
 
 const debug = process.env.NODE_ENV !== 'production';
 
-const vuexPersist = new VuexPersist({
-    key: 'my-app',
-    storage: sessionStorage // can be localStorage
-});
+// const vuexPersist = new VuexPersist({
+//     key: 'my-app',
+//     storage: sessionStorage // can be localStorage
+// });
 
 Vue.use(Vuex);
+
+// const initialState = () => ({
+//     ...characters.state,
+// });
+//
+// const state = initialState();
+//
+// const getters = {
+//     ...characters.getters,
+// };
+//
+// const actions = {
+//     ...characters.actions,
+// };
+//
+// const mutations = {
+//     ...characters.mutations,
+// };
 
 const plugins = [];
 
@@ -21,9 +39,9 @@ try {
     plugins.push(
         createLogger()
     );
-    plugins.push(
-        vuexPersist.plugin
-    );
+    // plugins.push(
+    //     vuexPersist.plugin
+    // );
 } catch (e) {
     console.error(e);
 }
@@ -33,5 +51,5 @@ export default new Vuex.Store({
         characters
     },
     strict: debug,
-    plugins: plugins
+    plugins
 });

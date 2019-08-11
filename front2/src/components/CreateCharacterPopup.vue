@@ -3,7 +3,7 @@
     <f7-popup
             id="create-character-popup"
             :opened="opened"
-              @popup:close="$emit('popup:closed')">
+            @popup:close="$emit('popup:closed')">
         <f7-page>
             <f7-navbar class="navbar-panel">
                 <f7-nav-left>
