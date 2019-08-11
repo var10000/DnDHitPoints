@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/var10000/DnDHitPoints/back/internal/service/db"
 )
+
 type userRepository struct {
 	db *sql.DB
 }
@@ -11,9 +12,9 @@ type userRepository struct {
 const (
 	CreateUserTableQuery = `CREATE TABLE IF NOT EXISTS users (user_name TEXT NOT NULL, id INTEGER PRIMARY KEY)`
 
-	AddUserQuery = `INSERT INTO users (user_name) VALUES (?)`
-	DeleteUserQuery = `DELETE FROM users WHERE id = ?`
-	UpdateUserQuery = `UPDATE users set name = ? where id = ?`
+	AddUserQuery     = `INSERT INTO users (user_name) VALUES (?)`
+	DeleteUserQuery  = `DELETE FROM users WHERE id = ?`
+	UpdateUserQuery  = `UPDATE users set name = ? where id = ?`
 	GetByIDUserQuery = `SELECT user_name FROM users WHERE id = ?`
 )
 
@@ -72,4 +73,3 @@ func (ur *userRepository) GetByID(id int64) (db.UserDBModel, error) {
 	u := db.UserDBModel{ID: id, Name: name}
 	return u, nil
 }
-
