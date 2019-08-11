@@ -9,12 +9,12 @@ type userRepository struct {
 }
 
 const (
-	CreateUserTableQuery = `CREATE TABLE IF NOT EXISTS users (name TEXT NOT NULL UNIQUE)`
+	CreateUserTableQuery = `CREATE TABLE IF NOT EXISTS users (user_name TEXT NOT NULL, id INTEGER PRIMARY KEY)`
 
-	AddUserQuery = `INSERT INTO users (name) VALUES (?)`
-	DeleteUserQuery = `DELETE FROM users WHERE rowid = ?`
-	UpdateUserQuery = `UPDATE users set name = ? where rowid = ?`
-	GetByIDUserQuery = `SELECT name FROM users WHERE rowid = ?`
+	AddUserQuery = `INSERT INTO users (user_name) VALUES (?)`
+	DeleteUserQuery = `DELETE FROM users WHERE id = ?`
+	UpdateUserQuery = `UPDATE users set name = ? where id = ?`
+	GetByIDUserQuery = `SELECT user_name FROM users WHERE id = ?`
 )
 
 func (ur *userRepository) Add(u db.UserDBModel) (db.UserDBModel, error) {
