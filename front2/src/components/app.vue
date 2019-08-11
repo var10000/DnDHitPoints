@@ -9,7 +9,7 @@
         <div>
           <f7-button
                   class="header__button_add"
-                  @click="isCreateCharacter = true"> +
+                  @click="isCreateCharacter = true"> ☺
           </f7-button>
           <f7-button
                   class="header__button_add"
@@ -17,6 +17,22 @@
           </f7-button>
         </div>
       </header>
+
+      <f7-block>
+        <div v-if="listOfFightCharactersData.length">
+          <div v-for="character in listOfFightCharactersData"
+               :key="character.ID">
+            <f7-button v-on:click="toFightList(character)"  style="background-color: #f0e6d5; margin: 5px; min-height: 140px; color: saddlebrown">
+              <div>
+                <h3> {{ character.Name }} id: {{ character.ID }} <br>
+                  ArmorType: {{ character.ArmorType }} <br>
+                  Initiative: {{ character.Initiative }} <br>
+                  Hits: {{ character.Hits }}</h3>
+              </div>
+            </f7-button>
+          </div>
+        </div>
+      </f7-block>
 
       <create-character-popup
         :opened="isCreateCharacter"
@@ -63,11 +79,16 @@
     },
     methods: {
       saveCharacter(data) {
-
+        this.listOfFightCharactersData = data.slice();
+      },
+      toFightList(character) {
+        let index = this.listOfFightCharactersData.findIndex((char) => char.ID === character.ID);
+        this.listOfFightCharactersData = this.listOfFightCharactersData.filter((item,ind) => ind !== index);
+        this.listOfCharacters.push(character);
       },
     },
     created() {
-      this.$store.dispatch("characters/loadListOfCharacters").then(() => {console.log("***")});
+      this.$store.dispatch("characters/loadListOfCharacters");
     }
   }
 </script>
@@ -116,5 +137,9 @@
     height: 45px;
     width: 45px;
     color: white;
+  }
+  .card {
+    background-color: #B9A487;
+    margin: 5px;
   }
 </style>

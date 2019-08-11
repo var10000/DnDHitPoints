@@ -2,10 +2,10 @@ import axios from "axios";
 import Vue from "vue";
 import { format } from "date-fns";
 
-const characterListURL = `http://192.168.0.28:10000/rooms/15/characterList`;
+const characterListURL = `http://172.20.10.4:10000/rooms/15/characterList`;
 
 const initialState = () => ({
-    listOfCharacters: ["1", "2", "3"],
+    listOfCharacters: [],
     listOfFightCharacters: []
 });
 
