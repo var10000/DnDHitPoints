@@ -14,7 +14,7 @@ type Application struct {
 }
 
 func (a *Application) Start() {
-	a.testUser()
+	a.testCharacter()
 }
 
 // ToRemove
@@ -33,4 +33,23 @@ func (a *Application) testUser() {
 		log.Fatal(err)
 	}
 	fmt.Println(user)
+}
+
+
+
+func (a *Application) testCharacter() {
+	c, err := a.cr.Add(db.CharacterDBModel{Name: "aa", UserID: 12, ArmorType: "yuiooiuy", Initiative: 4, Hits: 5, BattleID: 45})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(c)
+	char, err := a.cr.GetByUserID(12)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(char)
+	err = a.cr.Delete(1)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

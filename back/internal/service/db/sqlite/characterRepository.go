@@ -7,7 +7,8 @@ import (
 
 const (
 	CreateCharacterTableQuery = `CREATE TABLE IF NOT EXISTS characters (
-      name TEXT NOT NULL,
+      character_id INTEGER PRIMARY KEY,
+      character_name TEXT NOT NULL,
       armor_type TEXT,
       initiative INTEGER,
       hits INTEGER,
@@ -15,11 +16,11 @@ const (
       user_id INTEGER 
     )`
 
-	AddCharacterQuery = `INSERT into characters (name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
-	DeleteCharacterQuery = `DELETE FROM characters WHERE rowid = ?`
+	AddCharacterQuery = `INSERT into characters (character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
+	DeleteCharacterQuery = `DELETE FROM characters WHERE character_id = ?`
 	UpdateCharacterQuery = `UPDATE rooms set name = ?, armor_type = ?, initiative = ?, hits = ?, battle_id = ?, user_id = ? WHERE rowid = ?`
 	GetByIDCharacterQuery = `SELECT name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE rowid = ?`
-	GetByUserIDCharacterQuery = `SELECT rowid, name, armor_type, initiative, hits, battle_id FROM characters WHERE user_id = ?`
+	GetByUserIDCharacterQuery = `SELECT character_id, character_name, armor_type, initiative, hits, battle_id FROM characters WHERE user_id = ?`
 )
 
 type characterRepository struct {
@@ -108,9 +109,9 @@ func (cr *characterRepository) GetByUserID(id int64) ([]db.CharacterDBModel, err
 	}
 	var name, armorType string
 	var initiative, hits int
-	var characterID, battleID, userID int64
+	var characterID, battleID int64
 	row := stmt.QueryRow(id)
-	err = row.Scan(characterID, &name, &armorType, &initiative, hits, battleID, userID)
+	err = row.Scan(&characterID, &name, &armorType, &initiative, &hits, &battleID)
 	if err != nil {
 		return nil, err
 	}
