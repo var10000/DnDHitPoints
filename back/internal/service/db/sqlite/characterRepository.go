@@ -17,7 +17,7 @@ const (
       user_id INTEGER 
     )`
 
-	AddCharacterQuery         = `INSERT into characters (character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
+	AddCharacterQuery         = `INSERT INTO characters (character_id, character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)`
 	DeleteCharacterQuery      = `DELETE FROM characters WHERE character_id = ?`
 	UpdateCharacterQuery      = `UPDATE rooms set name = ?, armor_type = ?, initiative = ?, hits = ?, battle_id = ?, user_id = ? WHERE rowid = ?`
 	GetByIDCharacterQuery     = `SELECT character_name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE character_id = ?`
@@ -34,7 +34,7 @@ func (cr *characterRepository) Add(c db.CharacterDBModel) (db.CharacterDBModel, 
 	if err != nil {
 		return db.CharacterDBModel{}, err
 	}
-	res, err := stmt.Exec(c.Name, c.ArmorType, c.Initiative, c.Hits, c.BattleID, c.UserID)
+	res, err := stmt.Exec(c.ID, c.Name, c.ArmorType, c.Initiative, c.Hits, c.BattleID, c.UserID)
 	if err != nil {
 		return db.CharacterDBModel{}, err
 	}

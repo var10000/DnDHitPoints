@@ -43,12 +43,12 @@ func CreateRepositories() (db.UserRepository, db.CharacterRepository, db.RoomRep
 		{ID: 5, UserID: 4, Name: "Kojra", ArmorType: "HEAVY", Initiative: 6, Hits: 9, BattleID: 1},
 		{ID: 6, UserID: 5, Name: "Orc The Banebreak Rider", ArmorType: "HEAVY", Initiative: 6, Hits: 16, BattleID: 1},
 		{ID: 7, UserID: 6, Name: "Lidda Fireborn", ArmorType: "LIGHT", Initiative: 3, Hits: 7, BattleID: 1},
-		{ID: 7, UserID: 6, Name: "TROLL KHAN", ArmorType: "HEAVY", Initiative: 3, Hits: 27, BattleID: 2},
+		{ID: 8, UserID: 6, Name: "TROLL KHAN", ArmorType: "HEAVY", Initiative: 3, Hits: 27, BattleID: 2},
 	}
 	for _, character := range characters {
 		_, err = characterRepository.Add(character)
 		if err != nil {
-			log.Print("Imposible to add new character to character repository")
+			log.Print("Imposible to add new character to character repository", err)
 		}
 	}
 	return &userRepository{database}, &characterRepository, &roomRepository{database}, &battleRepository{database}
