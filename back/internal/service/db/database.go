@@ -16,15 +16,13 @@ type CharacterDBModel struct {
 }
 
 type RoomDBModel struct {
-	ID         int64
+	ID     int64
 	UserID int64
 }
 
-
 type BattleDBModel struct {
-	ID         int64
+	ID          int64
 	CharacterID int64
-	RoomID int64
 }
 
 type UserRepository interface {
@@ -53,5 +51,5 @@ type BattleRepository interface {
 	Add(b BattleDBModel) (BattleDBModel, error)
 	Delete(id int64) error
 	Update(b BattleDBModel) error
-	GetByID(id int64) (BattleDBModel, error)
+	GetByID(id int64) ([]BattleDBModel, error)
 }

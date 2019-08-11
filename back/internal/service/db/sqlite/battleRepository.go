@@ -7,26 +7,27 @@ import (
 
 const (
 	CreateBattleTableQuery = `CREATE TABLE IF NOT EXISTS battles (
+		battle_id INTEGER,
 		character_id INTEGER,
-		room_id INTEGER
+		PRIMARY KEY (battle_id, character_id)
     )`
 
-	AddBattleQuery = `INSERT INTO battles (name) VALUES (?)`
-	DeleteBattleQuery = `DELETE FROM battles WHERE rowid = ?`
-	UpdateBattleQuery = `UPDATE battles set character_id = ?, room_id = ? where rowid = ?`
-	GetByIDBattleQuery = `SELECT rowid, name FROM users WHERE rowid = ?`
+	AddBattleQuery     = `INSERT INTO battles (battle_id, character_id) VALUES (?, ?)`
+	DeleteBattleQuery  = `DELETE FROM battles WHERE character_id = ?`
+	UpdateBattleQuery  = `UPDATE battles SET character_id = ? where battle_id = ?`
+	GetByIDBattleQuery = `SELECT (battle_id, character_id) name FROM users WHERE battle_id = ?`
 )
-
 
 type battleRepository struct {
 	db *sql.DB
 }
+
 func (br *battleRepository) Add(b db.BattleDBModel) (db.BattleDBModel, error) {
 	stmt, err := br.db.Prepare(AddBattleQuery)
 	if err != nil {
 		return db.BattleDBModel{}, err
 	}
-	res, err := stmt.Exec(b.CharacterID, b.RoomID)
+	res, err := stmt.Exec(b.ID, b.CharacterID)
 	if err != nil {
 		return db.BattleDBModel{}, err
 	}
@@ -51,34 +52,35 @@ func (br *battleRepository) Update(b db.BattleDBModel) error {
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(b.CharacterID, b.RoomID)
+	_, err = stmt.Exec(b.CharacterID, b.ID)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (br *battleRepository) GetByID(id int64) (db.BattleDBModel, error) {
+func (br *battleRepository) GetByID(id int64) ([]db.BattleDBModel, error) {
 	stmt, err := br.db.Prepare(GetByIDBattleQuery)
 	if err != nil {
-		return db.BattleDBModel{}, err
+		return nil, err
 	}
 	_, err = stmt.Exec(id)
 	if err != nil {
-		return db.BattleDBModel{}, err
+		return nil, err
 	}
 	var roomID int64
 	var CharacterID int64
 	row := stmt.QueryRow(id)
 	err = row.Scan(&CharacterID, &roomID)
 	if err != nil {
-		return db.BattleDBModel{}, err
+		return nil, err
 	}
-	b := db.BattleDBModel{
-		ID: id,
-		RoomID: roomID,
-		CharacterID:CharacterID,
+	//TODO: возвращаем одну, потом уже сделаем несколько
+	b := []db.BattleDBModel{
+		{
+			ID:          id,
+			CharacterID: CharacterID,
+		},
 	}
 	return b, nil
 }
-
