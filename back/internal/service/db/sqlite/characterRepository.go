@@ -20,8 +20,8 @@ const (
 	AddCharacterQuery         = `INSERT into characters (character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
 	DeleteCharacterQuery      = `DELETE FROM characters WHERE character_id = ?`
 	UpdateCharacterQuery      = `UPDATE rooms set name = ?, armor_type = ?, initiative = ?, hits = ?, battle_id = ?, user_id = ? WHERE rowid = ?`
-	GetByIDCharacterQuery     = `SELECT name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE rowid = ?`
-	GetByUserIDCharacterQuery = `SELECT character_id, character_name, armor_type, initiative, hits, battle_id FROM characters WHERE user_id = ?`
+	GetByIDCharacterQuery     = `SELECT character_name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE character_id = ?`
+	GetByUserIDCharacterQuery = `SELECT character_name, armor_type, initiative, hits, battle_id FROM characters WHERE user_id = ?`
 	GetAllCharacterQuery      = `SELECT * FROM characters;`
 )
 
@@ -82,7 +82,7 @@ func (cr *characterRepository) GetByID(id int64) (db.CharacterDBModel, error) {
 	var initiative, hits int
 	var battleID, userID int64
 	row := stmt.QueryRow(id)
-	err = row.Scan(&name, &armorType, &initiative, hits, battleID, userID)
+	err = row.Scan(&name, &armorType, &initiative, &hits, &battleID, &userID)
 	if err != nil {
 		return db.CharacterDBModel{}, err
 	}
