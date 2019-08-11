@@ -7,16 +7,17 @@ import (
 )
 
 type WebServer struct {
-	UserResource   UserResource
-	RoomResource   RoomResource
-	BattleResource BattleResource
+	CharacterResource CharacterResource
+	RoomResource      RoomResource
+	BattleResource    BattleResource
 }
 
 func (ws WebServer) SetRouters() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Route("/", func(r chi.Router) {
-		r.Get("/rooms/{roomId}/characterList", ws.UserResource.getAllUsersCharacters)
+		r.Get("/rooms/{roomId}/characterList", ws.CharacterResource.getAllUsersCharacters)
+		r.Options("/rooms/{roomId}/characterList", ws.CharacterResource.getAllUsersCharacters)
 		r.Post("/rooms/{roomId}/addUser/{userId}", ws.RoomResource.addRoomMembers)
 		r.Delete("/rooms/{roomId}/removeUser/{userId}", ws.RoomResource.removeRoomMembers)
 		r.Post("/battles/{battleId}/createBattle", ws.BattleResource.startFight)

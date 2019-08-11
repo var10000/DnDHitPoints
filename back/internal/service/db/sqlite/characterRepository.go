@@ -3,6 +3,7 @@ package sqlite
 import (
 	"database/sql"
 	"github.com/var10000/DnDHitPoints/back/internal/service/db"
+	"log"
 )
 
 const (
@@ -16,17 +17,17 @@ const (
       user_id INTEGER 
     )`
 
-	AddCharacterQuery = `INSERT into characters (character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
-	DeleteCharacterQuery = `DELETE FROM characters WHERE character_id = ?`
-	UpdateCharacterQuery = `UPDATE rooms set name = ?, armor_type = ?, initiative = ?, hits = ?, battle_id = ?, user_id = ? WHERE rowid = ?`
-	GetByIDCharacterQuery = `SELECT name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE rowid = ?`
+	AddCharacterQuery         = `INSERT into characters (character_name, armor_type, initiative, hits, battle_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`
+	DeleteCharacterQuery      = `DELETE FROM characters WHERE character_id = ?`
+	UpdateCharacterQuery      = `UPDATE rooms set name = ?, armor_type = ?, initiative = ?, hits = ?, battle_id = ?, user_id = ? WHERE rowid = ?`
+	GetByIDCharacterQuery     = `SELECT name, armor_type, initiative, hits, battle_id, user_id FROM characters WHERE rowid = ?`
 	GetByUserIDCharacterQuery = `SELECT character_id, character_name, armor_type, initiative, hits, battle_id FROM characters WHERE user_id = ?`
+	GetAllCharacterQuery      = `SELECT * FROM characters;`
 )
 
 type characterRepository struct {
 	db *sql.DB
 }
-
 
 func (cr *characterRepository) Add(c db.CharacterDBModel) (db.CharacterDBModel, error) {
 	stmt, err := cr.db.Prepare(AddCharacterQuery)
@@ -77,7 +78,7 @@ func (cr *characterRepository) GetByID(id int64) (db.CharacterDBModel, error) {
 	if err != nil {
 		return db.CharacterDBModel{}, err
 	}
-	var name, armorType  string
+	var name, armorType string
 	var initiative, hits int
 	var battleID, userID int64
 	row := stmt.QueryRow(id)
@@ -86,16 +87,15 @@ func (cr *characterRepository) GetByID(id int64) (db.CharacterDBModel, error) {
 		return db.CharacterDBModel{}, err
 	}
 	c := db.CharacterDBModel{
-		ID: id,
-		Name: name,
+		ID:         id,
+		Name:       name,
 		Initiative: int(initiative),
-		Hits: int(hits),
-		BattleID: battleID,
-		UserID: userID,
+		Hits:       int(hits),
+		BattleID:   battleID,
+		UserID:     userID,
 	}
 	return c, nil
 }
-
 
 func (cr *characterRepository) GetByUserID(id int64) ([]db.CharacterDBModel, error) {
 	// TODO returns one, make return all
@@ -116,12 +116,29 @@ func (cr *characterRepository) GetByUserID(id int64) ([]db.CharacterDBModel, err
 		return nil, err
 	}
 	c := db.CharacterDBModel{
-		ID: characterID,
-		Name: name,
+		ID:         characterID,
+		Name:       name,
 		Initiative: int(initiative),
-		Hits: int(hits),
-		BattleID: battleID,
-		UserID: id,
+		Hits:       int(hits),
+		BattleID:   battleID,
+		UserID:     id,
 	}
 	return []db.CharacterDBModel{c}, nil
+}
+
+func (cr *characterRepository) GetAllCharacters() ([]db.CharacterDBModel, error) {
+	rows, err := cr.db.Query(GetAllCharacterQuery)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var characters []db.CharacterDBModel
+	for rows.Next() {
+		var ch db.CharacterDBModel
+		err := rows.Scan(&ch.ID, &ch.Name, &ch.ArmorType, &ch.Initiative, &ch.Hits, &ch.BattleID, &ch.UserID)
+		if err != nil {
+			log.Fatal(err)
+		}
+		characters = append(characters, ch)
+	}
+	return characters, nil
 }

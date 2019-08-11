@@ -27,7 +27,7 @@ func (br BattleResource) startFight(w http.ResponseWriter, r *http.Request) {
 			ID:          int64(battleId),
 			CharacterID: int64(character.Id),
 		}
-		_, err := db.BattleRepository.Add(battleId, b)
+		_, err := br.battleRepository.Add(b)
 		if err != nil {
 			log.Fatal("Request for start a fight was failed with error: ", err)
 		}

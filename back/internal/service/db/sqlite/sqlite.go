@@ -36,7 +36,3 @@ func CreateRepositories() (db.UserRepository, db.CharacterRepository, db.RoomRep
 	}
 	return &userRepository{db}, &characterRepository{db}, &roomRepository{db}, &battleRepository{db}
 }
-
-
-
-

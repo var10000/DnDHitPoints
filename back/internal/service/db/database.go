@@ -38,6 +38,7 @@ type CharacterRepository interface {
 	Update(c CharacterDBModel) error
 	GetByID(id int64) (CharacterDBModel, error)
 	GetByUserID(userID int64) ([]CharacterDBModel, error)
+	GetAllCharacters() ([]CharacterDBModel, error)
 }
 
 type RoomRepository interface {
