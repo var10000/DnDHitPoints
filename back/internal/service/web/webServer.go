@@ -17,6 +17,7 @@ func (ws WebServer) SetRouters() *chi.Mux {
 
 	r.Route("/", func(r chi.Router) {
 		r.Get("/rooms/{roomId}/characterList", ws.CharacterResource.getAllUsersCharacters)
+		r.Post("/rooms/{roomId}/getOrder", ws.CharacterResource.getSortedForRoom)
 		r.Options("/rooms/{roomId}/characterList", ws.CharacterResource.getAllUsersCharacters)
 		r.Post("/rooms/{roomId}/addUser/{userId}", ws.RoomResource.addRoomMembers)
 		r.Delete("/rooms/{roomId}/removeUser/{userId}", ws.RoomResource.removeRoomMembers)

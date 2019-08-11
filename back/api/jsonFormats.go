@@ -11,3 +11,7 @@ type CharacterModel struct {
 type CharacterListModel struct {
 	CharacterList []CharacterModel `json:"characterList"`
 }
+
+type CharacterIDs struct {
+	IDs []int64 `json:"IDs"`
+}
