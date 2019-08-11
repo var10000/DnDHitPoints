@@ -19,9 +19,8 @@ func (ws WebServer) SetRouters() *chi.Mux {
 		r.Get("/rooms/{roomId}/characterList", ws.UserResource.getAllUsersCharacters)
 		r.Post("/rooms/{roomId}/addUser/{userId}", ws.RoomResource.addRoomMembers)
 		r.Delete("/rooms/{roomId}/removeUser/{userId}", ws.RoomResource.removeRoomMembers)
-		r.Post("/battles/{battleId}/addCharacter/{characterId}", ws.BattleResource.addCharacter)
-		r.Delete("/battles/{battleId}/removeCharacter/{characterId}", ws.BattleResource.removeCharacter)
-		r.Get("/{roomId}/createBattle/{battleId}/addCharacter/{characterId}", ws.BattleResource.getBattleCharacters)
+		r.Post("/battles/{battleId}/createBattle", ws.BattleResource.startFight)
+		r.Get("/{roomId}/createBattle/{battleId}/characters", ws.BattleResource.getBattleCharacters)
 	})
 	return r
 }

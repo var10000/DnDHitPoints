@@ -1,7 +1,6 @@
 package api
 
 type CharacterModel struct {
-	Img        string `json:"img"`
 	Id         int32  `json:"id"`
 	Name       string `json:"name"`
 	ArmorType  string `json:"armorType"`
@@ -10,5 +9,5 @@ type CharacterModel struct {
 }
 
 type CharacterListModel struct {
-	UserList []CharacterModel `json:"userList"`
+	CharacterList []CharacterModel `json:"characterList"`
 }
