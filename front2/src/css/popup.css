@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap');
+nanbar {
+    background: rgba(49, 185, 63, 0.91);
+}
+.navbar-panel {
+    background: rgba(38, 5, 5, 0.91);
+    color: white;
+}
+.navbar-panel__title {
+    font-family: 'Cinzel', serif;
+    font-size: 25px;
+}
+.navbar-panel__text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: bold;
+    font-size: 19px;
+    letter-spacing: 1px;
+    color: white;
+}
