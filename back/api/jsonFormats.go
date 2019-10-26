@@ -15,3 +15,7 @@ type CharacterListModel struct {
 type CharacterIDs struct {
 	IDs []int64 `json:"IDs"`
 }
+
+type Color struct {
+	Color string `json:"color"`
+}
